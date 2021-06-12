@@ -1,0 +1,7 @@
+brainsmash
+matplotlib
+nibabel >= 3
+numpy
+scikit-learn
+scipy
+pillow
