@@ -2,7 +2,7 @@ import pickle
 from os.path import exists
 
 
-class Sim(object):
+class Sim:
     """ 
     Class derived from Model base class to time evolve
     system via Euler integration. Also includes hemodynamic

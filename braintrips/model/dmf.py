@@ -11,7 +11,7 @@ from scipy.linalg import solve_lyapunov
 from scipy.optimize import fsolve
 
 
-class Model(object):
+class Model:
     """ Mean-field model of neural circuit dynamics. """
 
     def __init__(self, sc, g=0, h_map=None, w_ee=(0.15, 0.),
@@ -41,9 +41,9 @@ class Model(object):
         htr2a_map : ndarray
             HTR2A gene expression map
         de : float
-            TODO
+            fractional change in gain on excitatory neural ensembles
         di : float
-            TODO
+            fractional change in gain on inhibitory neural ensembles
         verbose : bool, optional
             If True, prints diagnostics to console (True by default)  
         
@@ -144,7 +144,7 @@ class Model(object):
         self._K_II = -self._w_II * self._id
         self._K_EI = None  # Assigned once FIC is computed
 
-        # Solve for feedback inhibition strength (prior to gain modulation)
+        # Solve for feedback inhibition strength (PRIOR to gain modulation)
         self._compute_FIC()
 
         # Implement neural gain modulation
@@ -155,7 +155,7 @@ class Model(object):
                 self._gain_map = htr2a_map
             else:
                 htr2a_range = np.ptp(htr2a_map)
-                self._gain_map = (htr2a_map - htr2a_map.min()) / htr2a_range
+                self._gain_map = (htr2a_map - np.min(htr2a_map)) / htr2a_range
                 assert np.all(self._gain_map <= 1)
                 assert np.all(self._gain_map >= 0)
         elif htr2a_map is not None:
@@ -584,13 +584,14 @@ class Model(object):
     def gbc(self, fc):
         """
         Compute GBC map, equivalent to the row-wise average of the input FC
-        matrix using off-diagonal entries. FC Elements are first Fisher
-        z-transformed.
+        matrix using off-diagonal entries. FC should first be Fisher
+        r-to-Z-transformed.
 
         Returns
         -------
-        np.ndarray
+        (N,) np.ndarray
             BOLD GBC map
+
         """
         idiag = np.where(np.identity(self._nareas))
         fc[idiag] = 0
@@ -605,9 +606,9 @@ class Model(object):
         Parameters
         ----------
         de : float
-            TODO
+            fractional change in gain on excitatory neural ensembles
         di : float
-            TODO
+            fractional change in gain on inhibitory neural ensembles
         gain_map : array_like (optional)
             if argument is passed, use this map to parametrize gain
         rebalance_fic : bool (optional, default False)

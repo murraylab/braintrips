@@ -4,7 +4,7 @@ with open("README.md", "r") as f:
     readme = f.read()
 
 requirements = [
-    "numpy", "scikit-learn", "scipy", "matplotlib", "nibabel", "brainsmash"]
+    "numpy", "scikit-learn", "scipy", "matplotlib", "nibabel", "brainsmash", "wbplot"]
 
 setup(
     name="braintrips",

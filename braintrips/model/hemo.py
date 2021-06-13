@@ -10,7 +10,7 @@ import numpy as np
 dtype = np.float64  # PRECISION
 
 
-class Balloon(object):
+class Balloon:
     """ Class for hemodynamic transfer function for input-state-output."""
 
     def __init__(self, nareas, syn_noise_var=sigma, linearize=False):
